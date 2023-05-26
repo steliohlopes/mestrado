@@ -2,8 +2,8 @@ import meshio
 
 # Inputs
 # Mesh File
-meshPath = './'
-meshFile = 'PipeFlow'
+meshPath = './NewGeometry/'
+meshFile = 'whistle'
 
 msh = meshio.read(meshPath+meshFile+".msh")
 
