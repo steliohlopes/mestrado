@@ -18,7 +18,7 @@ l3 = R*Sin(alpha);
 // Parametro de malha
 MeshFactor = 2e-4;
 
-// Cylinder 
+
 Point(1) = {0,0,0,MeshFactor}; //center
 Point(2) = {0,0,D_inlet/2,MeshFactor};
 Point(3) = {0,D_inlet/2,0,MeshFactor};
@@ -33,18 +33,14 @@ Circle(4) = {5,1,2};
 Line Loop(5) = {1,2,3,4};
 Plane Surface(6) = {5};
 
-Extrude {L_inlet,0,0} {
-  Surface{6};
-}
-
 //Side Wall outlet
-Point(20) = {L_inlet+R+l2+l1,(D_inlet/2),W_outlet/2,MeshFactor};
-Point(21) = {L_inlet,(D_inlet/2)+H_inlet,W_outlet/2,MeshFactor};
-Point(22) = {L_inlet,(D_inlet/2)-R,W_outlet/2,MeshFactor};
-Point(23) = {L_inlet+R+l2+l1+L_outlet,(D_inlet/2)+H_inlet,W_outlet/2,MeshFactor};
-Point(25) = {L_inlet+R+l2+l1+L_outlet,(D_inlet/2),W_outlet/2,MeshFactor};
-Point(26) = {L_inlet+R+l2,(D_inlet/2)-R-l3,W_outlet/2,MeshFactor};
-Point(27) = {L_inlet+R,(D_inlet/2)-R,W_outlet/2,MeshFactor}; //center
+Point(20) = {R+l2+l1,(D_inlet/2),W_outlet/2,MeshFactor};
+Point(21) = {0,(D_inlet/2)+H_inlet,W_outlet/2,MeshFactor};
+Point(22) = {0,(D_inlet/2)-R,W_outlet/2,MeshFactor};
+Point(23) = {R+l2+l1+L_outlet,(D_inlet/2)+H_inlet,W_outlet/2,MeshFactor};
+Point(25) = {R+l2+l1+L_outlet,(D_inlet/2),W_outlet/2,MeshFactor};
+Point(26) = {R+l2,(D_inlet/2)-R-l3,W_outlet/2,MeshFactor};
+Point(27) = {R,(D_inlet/2)-R,W_outlet/2,MeshFactor}; //center
 
 Line(25) = {22,21};
 Line(26) = {21,23};
@@ -62,15 +58,7 @@ Extrude {0,0,-W_outlet} {
 
 // BooleanDifference(50) = { Surface {36};Delete;} {Surface {11}; Delete;};
 
-v() = BooleanFragments{ Volume{1}; Delete;}{ Volume{2}; Delete; };
-
-// inletS={Surface{6}};
-// inletC={Line{1,2,3,4}};
-
-// outletS={Surface{54}};
-// outletC={Line{51,56,54,55}};
-
-// wallS={Surface{57, 58, 59, 56, 55, 53,50}};
+v() = BooleanFragments{ Volume{1}; Delete;}{ Surface{6}; Delete; };
 
 
 // We then define a `Threshold' field, which uses the return value of the
@@ -86,7 +74,7 @@ v() = BooleanFragments{ Volume{1}; Delete;}{ Volume{2}; Delete; };
 //        Point         DistMin  DistMax
 
 Field[1] = Distance;
-Field[1].CurvesList = {17,20};
+Field[1].CurvesList = {9,12};
 Field[1].Sampling = 100;
 
 Field[2] = Threshold;
@@ -96,16 +84,13 @@ Field[2].SizeMax = MeshFactor;
 Field[2].DistMin = L_outlet;
 Field[2].DistMax = L_outlet+l1;
 
-
 Field[5] = Min;
 Field[5].FieldsList = {2};
 Background Field = 5;
 
-
-
 Physical Surface("Inlet") = {6};
-Physical Surface("Outlet") = {14};
-Physical Surface("Wall") = {12,7, 10, 8, 9, 18, 19, 17, 16, 15, 13};
-Physical Volume("Fluid") = {1:2};
+Physical Surface("Outlet") = {9};
+Physical Surface("Wall") = {7,8,10,11,12,13,14};
+Physical Volume("Fluid") = {1};
 
 
