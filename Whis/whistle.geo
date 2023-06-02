@@ -16,7 +16,7 @@ l2 = R*Cos(alpha);
 l3 = R*Sin(alpha);
 
 // Parametro de malha
-MeshFactor = 2e-4;
+MeshFactor = 3e-4;
 
 
 Point(1) = {0,0,0,MeshFactor}; //center
@@ -79,26 +79,38 @@ Field[1].Sampling = 100;
 
 Field[2] = Threshold;
 Field[2].InField = 1;
-Field[2].SizeMin = MeshFactor / 3;
+Field[2].SizeMin = MeshFactor / 4;
 Field[2].SizeMax = MeshFactor;
 Field[2].DistMin = L_outlet;
 Field[2].DistMax = L_outlet+l1;
 
 Field[3] = Distance;
-Field[3].CurvesList = {1,2,3,4};
-Field[3].Sampling = 25;
+Field[3].SurfacesList = {7,8,10,11,12,13,14};
+Field[3].Sampling = 100;
 
 Field[4] = Threshold;
 Field[4].InField = 3;
-Field[4].SizeMin = MeshFactor / 3;
+Field[4].SizeMin = MeshFactor / 4;
 Field[4].SizeMax = MeshFactor;
-Field[4].DistMin = D_inlet;
-Field[4].DistMax = D_inlet*2;
+Field[4].DistMin = H_inlet;
+Field[4].DistMax = H_inlet*2;
 
 
-Field[5] = Min;
-Field[5].FieldsList = {2,4};
-Background Field = 5;
+Field[5] = Distance;
+Field[5].CurvesList = {1,2,3,4};
+Field[5].Sampling = 25;
+
+Field[6] = Threshold;
+Field[6].InField = 5;
+Field[6].SizeMin = MeshFactor / 3;
+Field[6].SizeMax = MeshFactor;
+Field[6].DistMin = D_inlet;
+Field[6].DistMax = D_inlet*2;
+
+Field[7] = Min;
+Field[7].FieldsList = {2,4,6};
+
+Background Field = 7;
 
 Physical Surface("Inlet") = {6};
 Physical Surface("Outlet") = {9};
